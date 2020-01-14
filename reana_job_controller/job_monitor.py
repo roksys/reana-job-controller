@@ -132,10 +132,9 @@ class JobMonitorKubernetes(JobMonitor):
                                 job_name=kubernetes_job_id)).items[-1]
                     logging.info('Grabbing pod {} logs...'.format(
                         last_spawned_pod.metadata.name))
-                    job_db[job_id]['log'] = \
-                        self.get_container_logs(last_spawned_pod)
-                    store_logs(job_id=job_id, logs=job_db[job_id]['log'])
-
+                    job_db[job_id]['log'] = self.get_container_logs(
+                        last_spawned_pod)
+                    store_logs(logs=job_db[job_id]['log'], job_id=job_id)
                     logging.info('Cleaning Kubernetes job {} ...'.format(
                         kubernetes_job_id))
                     KubernetesJobManager.stop(kubernetes_job_id)
